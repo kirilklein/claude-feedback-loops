@@ -1,0 +1,13 @@
+{
+  "name": "claude-feedback-loops",
+  "owner": {
+    "name": "Kiril Klein"
+  },
+  "plugins": [
+    {
+      "name": "feedback-loops",
+      "source": "./",
+      "description": "Feedback loops your memory plugin doesn't close: PR-feedback review calibration, pipeline gap tracking, and a confidence ladder for lessons."
+    }
+  ]
+}

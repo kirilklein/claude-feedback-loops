@@ -1,0 +1,11 @@
+{
+  "name": "feedback-loops",
+  "description": "Feedback loops your memory plugin doesn't close: PR-feedback review calibration, pipeline gap tracking, and a confidence ladder for lessons.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Kiril Klein"
+  },
+  "homepage": "https://github.com/kirilklein/claude-feedback-loops",
+  "license": "MIT",
+  "keywords": ["review", "calibration", "retro", "feedback", "memory", "lessons"]
+}
