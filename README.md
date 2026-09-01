@@ -10,32 +10,11 @@ Memory tools (claude-mem, Claude Code's native memory) are great at *capturing* 
 
 **Five slash commands. Three markdown files. No runtime, no database.** Works alongside whatever memory setup you already have.
 
-```mermaid
-flowchart LR
-    subgraph loop1 ["Loop 1 · Review calibration"]
-        A[Human PR feedback] -->|/retro| B[review-calibration.md]
-        B -->|loaded by| C[/review/]
-        C -->|sharper findings| A
-    end
-```
+<img src="assets/loop1.svg" alt="Loop 1: human PR feedback → /retro → review-calibration.md → /review → sharper findings">
 
-```mermaid
-flowchart LR
-    subgraph loop2 ["Loop 2 · Pipeline gaps"]
-        D[/ship pipeline/] -->|later step catches<br>earlier step's miss| E[workflow-gaps.md]
-        E -->|/gaps clusters<br>by root cause| F[lint config · test mapping · calibration]
-        F -->|tighter pipeline| D
-    end
-```
+<img src="assets/loop2.svg" alt="Loop 2: /ship logs gaps → workflow-gaps.md → /gaps clusters by root cause → tighter pipeline">
 
-```mermaid
-flowchart LR
-    subgraph loop3 ["Loop 3 · Confidence ladder"]
-        G[Observation] -->|confirmed again| H[Proven Pattern]
-        H -->|violation caused<br>a real failure| I[Hard Rule]
-        I -.->|/promote audits,<br>demotes, retires| G
-    end
-```
+<img src="assets/loop3.svg" alt="Loop 3: Observation → Proven Pattern → Hard Rule, audited by /promote">
 
 ## Install
 
