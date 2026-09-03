@@ -7,7 +7,7 @@
     {
       "name": "feedback-loops",
       "source": "./",
-      "description": "Feedback loops your memory plugin doesn't close: PR-feedback review calibration, pipeline gap tracking, and a confidence ladder for lessons."
+      "description": "Pipeline gap tracking for Claude Code: log every time a later stage catches what an earlier one missed, then close the gaps by root cause. Plus PR-feedback review calibration and a confidence ladder for lessons."
     }
   ]
 }

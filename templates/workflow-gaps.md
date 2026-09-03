@@ -1,7 +1,10 @@
 # Workflow Gaps
 
-One line each time a later pipeline step catches what an earlier one should have. Written by `/ship`, consumed by `/gaps`.
+One line each time a later stage catches what an earlier one should have. Written by `/gap`, consumed by `/gaps`.
 
-<!-- - [2026-08-31] step 4 (lint) missed unused async import — caught by step 6 (review) -->
+Format: `- [YYYY-MM-DD] <should-have> → <caught-by>: <what>`
+Layers: format lint types test review ci bot-review human-review production tooling
+
+<!-- - [2026-03-12] review → bot-review: changed return type to tuple but only reviewed changed files, not callers -->
 
 ## Resolved
