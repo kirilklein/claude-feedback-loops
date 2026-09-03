@@ -8,11 +8,11 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757.svg)](https://docs.anthropic.com/en/docs/claude-code)
 ![No runtime](https://img.shields.io/badge/runtime-none-lightgrey.svg)
 
-Every time a later stage catches something an earlier one should have — review finds what tests missed, CI fails on what passed locally, a human spots what the bot didn't — that is a **pipeline gap**. Everyone experiences them; almost nobody logs them. This plugin does: `/ship` writes one line per gap, and `/gaps` periodically clusters the log by root cause and closes each cluster at the cheapest layer that can hold it.
+Every time a later stage catches something an earlier one should have — review finds what tests missed, CI fails on what passed locally, a human spots what the bot didn't — that is a **pipeline gap**. Everyone experiences them; almost nobody logs them. This plugin does: `/gap` writes one line per gap, from inside whatever workflow you already have, and `/gaps` periodically clusters the log by root cause and closes each cluster at the cheapest layer that can hold it.
 
-<img src="assets/loop2.svg" alt="Loop: /ship logs gaps → workflow-gaps.md → /gaps clusters by root cause → tighter pipeline">
+<img src="assets/loop2.svg" alt="Loop: /gap logs one line → workflow-gaps.md → /gaps clusters by root cause → tighter pipeline">
 
-It ships with two smaller loops that share the same shape (log the signal, then act on it in bulk): review calibration from human PR feedback, and a confidence ladder for lessons. **Five slash commands. Three markdown files. No runtime, no database.** Works alongside whatever memory setup you already have.
+It ships with two smaller loops that share the same shape (log the signal, then act on it in bulk): review calibration from human PR feedback, and a confidence ladder for lessons. **Five slash commands. Three markdown files. No runtime, no database, no pipeline to adopt.** Works alongside whatever memory setup and ship workflow you already have.
 
 ## What six months of gap logging looks like
 
@@ -64,31 +64,39 @@ One human comment became a check that runs on every future review of that codeba
    /plugin install feedback-loops@claude-feedback-loops
    ```
 
-2. In any repo with uncommitted changes, run `/review`. No calibration file yet, so nothing is tagged. That is the baseline.
+2. Paste [`templates/claude-md-snippet.md`](templates/claude-md-snippet.md) into your project's `CLAUDE.md`. Three sentences. From now on, when CI goes red on something that passed locally or a reviewer flags what tests missed, Claude runs `/gap` before fixing it. Or skip the snippet and run `/gap test ci "mocks not updated for new return type"` yourself.
 
-3. Pick a past PR where a human left comments and run `/retro <number>`. Then `cat .claude/review-calibration.md`. From now on `/review` loads it and tags findings it produces with `[calibrated]`.
+3. After 5+ entries, run `/gaps`. It prints where the pipeline leaks most and proposes one fix per root cause.
+
+4. Optional: pick a past PR where a human left comments and run `/retro <number>`. From now on `/review` loads the resulting calibration file and tags findings it produces with `[calibrated]`.
 
 ## Commands
 
 | Command | What it does | Run it when |
 |---|---|---|
-| `/ship` | format → lint → test → review → commit → push, logging every case where a later step catches an earlier step's miss. Reads format/lint/test commands from your `CLAUDE.md`, else infers them from project files | To ship a change |
-| `/gaps` | Clusters the gap log by root cause; closes each at the cheapest layer (lint config > test mapping > calibration > lesson) | Every week or two |
+| `/gap` | Appends one line to the gap log: which layer should have caught it, which did, what slipped through | The moment CI, a bot, or a human catches what an earlier stage missed |
+| `/gaps` | Prints a leak table (counts per should-have → caught-by), clusters by root cause, closes each at the cheapest layer (lint config > test mapping > calibration > lesson) | Every week or two, or at 5+ entries |
 | `/retro` | Reads human PR comments, asks *"could `/review` have caught this?"*, writes each miss as a concrete calibration pattern | After humans review your PR |
 | `/review` | Focused code review that loads your calibration patterns and tags their findings `[calibrated]` | Before pushing, or on demand |
 | `/promote` | Audits `lessons.md`: promotes entries with fresh evidence, demotes contradicted ones, retires entries about deleted code | When lessons feel stale |
 
 ## The loops in detail
 
-### 1. Pipeline gap tracking — `/ship` → `/gaps`
+### 1. Pipeline gap tracking — `/gap` → `/gaps`
 
-`/ship`'s real job isn't running the pipeline — it's noticing when a **later step catches what an earlier one should have** (review flagging what lint missed, CI failing on what tests passed) and logging one line per gap:
+A gap is a **later stage catching what an earlier one should have**. `/gap` logs one line, naming both layers from a fixed vocabulary (`format lint types test review ci bot-review human-review production tooling`) so they can be counted:
 
 ```markdown
-- [2026-03-12] step 6 (review) missed broken caller: changed return type to tuple but only reviewed changed files, not callers — caught by bot review
+- [2026-03-12] review → bot-review: changed return type to tuple but only reviewed changed files, not callers
 ```
 
-`/gaps` then clusters the log by root cause and closes each cluster at the cheapest layer: a lint config change closes a gap *mechanically*; a calibration entry closes it *probabilistically*; a lesson closes it only if it's remembered. The pipeline tightens itself.
+**Fitting it into your workflow.** There is no pipeline to adopt; `/gap` is called from wherever you already notice the miss:
+
+- *Nothing to set up:* run `/gap` yourself when CI or a reviewer surprises you.
+- *One paragraph in `CLAUDE.md`* ([template](templates/claude-md-snippet.md)): Claude then runs `/gap` on its own inside whatever ship, triage or review command you already use — the moment it reads the red CI run or the PR comment, before it starts fixing.
+- *Your own commands:* if you have a `/ship` or `/triage-ci`, add one line telling it to call `/gap` when a later step catches an earlier step's miss.
+
+`/gaps` then prints the leak table (where does it leak most?), clusters by root cause and closes each cluster at the cheapest layer: a lint or type-checker config change closes a gap *mechanically*; a test-mapping change closes it *on every run*; a calibration entry closes it *probabilistically*; a lesson closes it only if it's remembered.
 
 ### 2. Review calibration — `/retro` → `/review`
 
@@ -124,7 +132,7 @@ Per project, in `.claude/` — all plain markdown, checked into git, shared with
 | File | Written by | Read by |
 |---|---|---|
 | `review-calibration.md` | `/retro` | `/review` |
-| `workflow-gaps.md` | `/ship` | `/gaps` |
+| `workflow-gaps.md` | `/gap` | `/gaps` |
 | `lessons.md` | `/retro`, you | `/review`, `/promote` |
 
 Templates in [`templates/`](templates/).
@@ -132,6 +140,7 @@ Templates in [`templates/`](templates/).
 ## What this is not
 
 - **Not a memory system** — pair it with one; it calibrates what memory captures.
+- **Not a pipeline** — it does not run your formatter, tests or push. It fits into whatever already does.
 - **Not a framework** — five prompts and three markdown files you can read in ten minutes.
 - **Not magic** — the loops only close if you run `/gaps` every week or two and `/retro` after human reviews. That's the whole discipline.
 
