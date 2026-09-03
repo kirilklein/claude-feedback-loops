@@ -1,6 +1,6 @@
 ---
 description: Calibrated code review — applies patterns learned from past human PR feedback
-allowed-tools: Read, Grep, Glob
+allowed-tools: Read, Grep, Glob, Bash(git diff:*), Bash(git status:*)
 ---
 
 You are doing a focused code review.
