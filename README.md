@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo.png" alt="claude-feedback-loops" width="420"></p>
+
 # claude-feedback-loops
 
 **Your pipeline tells you where it leaks. This plugin makes you write it down.**
