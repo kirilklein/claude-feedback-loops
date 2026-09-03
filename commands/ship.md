@@ -4,6 +4,16 @@ description: Format → lint → test → review → commit → push, tracking g
 
 Run the full pre-push pipeline autonomously. Fix issues inline; do not pause for confirmation between steps.
 
+## Configure
+
+This pipeline is opinionated on purpose. It needs to know three commands: format, lint, test.
+
+1. Use the ones in the project's `CLAUDE.md` if it names them.
+2. Otherwise infer from project files: `pyproject.toml` / `ruff.toml` / `setup.cfg` (ruff, black, pytest), `package.json` scripts (prettier, eslint, test), `Makefile` targets, `.pre-commit-config.yaml`.
+3. If nothing is found, ask once, then suggest the user record the answer in `CLAUDE.md` so the next run is silent.
+
+The stop on `main`/`master`/`dev` is intentional and not configurable here; change branch names in this file if your trunk is called something else.
+
 ## Steps
 
 1. **Understand changes**: `git status` and `git diff`; identify changed source files.

@@ -1,31 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 190" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <style>
+    svg { --bg: #ffffff; --text: #24292f; --muted: #57606a; --faint: #8b949e; --box: #f6f8fa; --edge: #d0d7de; --tint: #fff1e7; --accent: #d97757; }
+    @media (prefers-color-scheme: dark) {
+      svg { --bg: #0d1117; --text: #e6edf3; --muted: #8b949e; --faint: #6e7681; --box: #161b22; --edge: #30363d; --tint: #3a2418; }
+    }
+  </style>
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#57606a"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
     </marker>
     <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#d97757"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
     </marker>
   </defs>
-  <rect width="860" height="190" fill="white"/>
-  <text x="20" y="24" font-size="11" letter-spacing="1.5" fill="#8b949e">LOOP 3 · CONFIDENCE LADDER</text>
+  <rect width="860" height="190" fill="var(--bg)"/>
+  <text x="20" y="24" font-size="11" letter-spacing="1.5" fill="var(--faint)">LOOP 3 · CONFIDENCE LADDER</text>
 
-  <rect x="20" y="44" width="200" height="44" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="120" y="71" text-anchor="middle" font-size="14" fill="#24292f">Observation</text>
+  <rect x="20" y="44" width="200" height="44" rx="8" fill="var(--box)" stroke="var(--edge)"/>
+  <text x="120" y="71" text-anchor="middle" font-size="14" fill="var(--text)">Observation</text>
 
-  <rect x="330" y="44" width="200" height="44" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="430" y="71" text-anchor="middle" font-size="14" fill="#24292f">Proven Pattern</text>
+  <rect x="330" y="44" width="200" height="44" rx="8" fill="var(--box)" stroke="var(--edge)"/>
+  <text x="430" y="71" text-anchor="middle" font-size="14" fill="var(--text)">Proven Pattern</text>
 
-  <rect x="640" y="44" width="200" height="44" rx="8" fill="#fff1e7" stroke="#d97757"/>
-  <text x="740" y="71" text-anchor="middle" font-size="14" fill="#24292f">Hard Rule</text>
+  <rect x="640" y="44" width="200" height="44" rx="8" fill="var(--tint)" stroke="var(--accent)"/>
+  <text x="740" y="71" text-anchor="middle" font-size="14" fill="var(--text)">Hard Rule</text>
 
-  <line x1="220" y1="66" x2="326" y2="66" stroke="#57606a" marker-end="url(#a)"/>
-  <text x="273" y="88" text-anchor="middle" font-size="12" fill="#57606a">confirmed again</text>
+  <line x1="220" y1="66" x2="326" y2="66" stroke="var(--muted)" marker-end="url(#a)"/>
+  <text x="273" y="88" text-anchor="middle" font-size="12" fill="var(--muted)">confirmed again</text>
 
-  <line x1="530" y1="66" x2="636" y2="66" stroke="#57606a" marker-end="url(#a)"/>
-  <text x="583" y="86" text-anchor="middle" font-size="12" fill="#57606a">violation caused</text>
-  <text x="583" y="100" text-anchor="middle" font-size="12" fill="#57606a">a real failure</text>
+  <line x1="530" y1="66" x2="636" y2="66" stroke="var(--muted)" marker-end="url(#a)"/>
+  <text x="583" y="86" text-anchor="middle" font-size="12" fill="var(--muted)">violation caused</text>
+  <text x="583" y="100" text-anchor="middle" font-size="12" fill="var(--muted)">a real failure</text>
 
-  <path d="M 740 88 C 740 170, 120 170, 120 88" fill="none" stroke="#d97757" stroke-dasharray="5 4" marker-end="url(#b)"/>
-  <text x="430" y="154" text-anchor="middle" font-size="12" fill="#d97757" stroke="white" stroke-width="6" paint-order="stroke"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/promote</tspan> audits · demotes · retires</text>
+  <path d="M 740 88 C 740 170, 120 170, 120 88" fill="none" stroke="var(--accent)" stroke-dasharray="5 4" marker-end="url(#b)"/>
+  <text x="430" y="154" text-anchor="middle" font-size="12" fill="var(--accent)" stroke="var(--bg)" stroke-width="6" paint-order="stroke"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/promote</tspan> audits · demotes · retires</text>
 </svg>
