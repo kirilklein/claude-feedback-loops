@@ -2,6 +2,8 @@
 
 # claude-feedback-loops
 
+> **Moved to [kirilklein/self-improving-claude](https://github.com/kirilklein/self-improving-claude).** Same plugin, same history; install with `/plugin marketplace add kirilklein/self-improving-claude` then `/plugin install feedback-loops@self-improving-claude`. This repo is archived.
+
 **Your pipeline tells you where it leaks. This plugin makes you write it down.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
